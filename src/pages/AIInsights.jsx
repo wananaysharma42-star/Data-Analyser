@@ -306,7 +306,7 @@ export default function AIInsights() {
             <div className="flex flex-col h-[700px] bg-[#161b22] border border-[#30363d] rounded-md overflow-hidden">
               <div className="p-4 border-b border-[#30363d] bg-[#0d1117]/50 flex justify-between items-center">
                 <h3 className="text-[10px] font-black uppercase tracking-widest text-[#764abc]">AI_ANALYST_REPL</h3>
-                <span className="text-[9px] text-[#8b949e]">MODEL: gemini-1.5-flash</span>
+                <span className="text-[9px] text-[#8b949e]">MODEL: gemini-3-flash-preview</span>
               </div>
 
               {/* Chat Log */}
