@@ -2,6 +2,8 @@
 
 **DataVision KRNL** is a professional-grade, AI-powered data analytics platform built for high-speed insight generation. It combines robust statistical kernels with the power of Google Gemini to transform raw CSV data into executive-ready printable reports.
 
+### 🎥 [Watch the Project Demo Video](https://drive.google.com/file/d/1rhJ5dPgk8_4PUTeHXdwxJZt10yk36hQu/view?usp=drive_link)
+
 ---
 
 ## 🚀 Key Features
