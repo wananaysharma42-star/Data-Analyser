@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
 import Papa from "papaparse";
 import { useData } from "../context/DataContext";
+import { UploadCloud, Database, FileSpreadsheet, CheckCircle2, Terminal } from "lucide-react";
 
 export default function Upload() {
   const { addDataset, setSelectedData, user } = useData();
@@ -40,40 +41,55 @@ export default function Upload() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d1117] font-mono text-[#c9d1d9] selection:bg-[#764abc]/30">
+    <div className="min-h-screen bg-[#050505] font-sans text-[#bbb] selection:bg-[#c5a36b]/20">
       <Navbar />
 
-      <div className="p-6 max-w-5xl mx-auto space-y-8">
+      <main className="max-w-6xl mx-auto p-8 space-y-10">
+
         {/* Module Header */}
-        <div className="border-b border-[#30363d] pb-4">
-          <h1 className="text-xl font-bold tracking-tight uppercase">Data_Ingestion_Unit</h1>
-          <p className="text-[#8b949e] text-[10px] mt-1 tracking-widest uppercase">
-            Protocol: CSV_PARSER_V2 // KERNEL_MOUNT
-          </p>
-        </div>
+        <header className="flex flex-col md:flex-row md:items-end justify-between py-6 border-b-2 border-[#1a1a1a]">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Database size={14} className="text-[#c5a36b]" />
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#777]">Resource Acquisition</p>
+            </div>
+            <h1 className="text-4xl font-bold text-[#fcfcfc] tracking-tight">Data Upload</h1>
+          </div>
+          <div className="text-[10px] font-black text-[#666] uppercase tracking-[0.4em]">
+            Protocol: CSV Parser
+          </div>
+        </header>
 
         {/* Upload Terminal Card */}
-        <div className="bg-[#161b22] border border-[#30363d] p-10 rounded-md flex flex-col items-center justify-center border-dashed relative">
-          <div className="text-center space-y-4">
-            <div className="text-[#764abc] flex justify-center">
-              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-              </svg>
-            </div>
-            
-            <p className="text-xs text-[#8b949e] uppercase font-bold tracking-tighter">
-              Drag and drop source file or click to browse
-            </p>
+        <div className="bg-[#080808] border-2 border-[#1a1a1a] p-16 relative overflow-hidden group">
+          {/* Subtle Background Accent */}
+          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+            <FileSpreadsheet size={120} className="text-[#c5a36b]" />
+          </div>
 
-            <label className="cursor-pointer inline-block">
-              <span className="px-6 py-2 bg-[#764abc] hover:bg-[#8a5ad4] text-white text-[11px] font-black uppercase tracking-widest rounded transition-all border border-[#8a5ad4]/20">
-                LOAD_LOCAL_FILE
+          <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8">
+            <div className="w-20 h-20 bg-[#0c0c0c] border-2 border-[#1a1a1a] flex items-center justify-center rounded-sm">
+              <UploadCloud size={32} className="text-[#c5a36b]" />
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-black text-[#fcfcfc] uppercase tracking-widest italic">
+                Awaiting Data Upload
+              </p>
+              <p className="text-[10px] text-[#777] uppercase tracking-[0.2em] font-bold">
+                Drag source file here or browse manually to initialize
+              </p>
+            </div>
+
+            <label className="cursor-pointer">
+              <span className="inline-block px-10 py-4 bg-[#c5a36b] hover:bg-[#d4b582] text-[#050505] text-[11px] font-black uppercase tracking-[0.4em] transition-all border-2 border-transparent hover:border-[#fcfcfc]/20">
+                Select Local File
               </span>
-              <input 
-                type="file" 
-                accept=".csv" 
-                onChange={handleFile} 
-                className="hidden" 
+              <input
+                type="file"
+                accept=".csv"
+                onChange={handleFile}
+                className="hidden"
               />
             </label>
           </div>
@@ -81,24 +97,40 @@ export default function Upload() {
 
         {/* Preview Output */}
         {preview.length > 0 && (
-          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <div className="flex items-center gap-2">
-              <span className="text-emerald-500 font-bold text-xs">[SUCCESS]</span>
-              <h2 className="text-[10px] font-black text-[#8b949e] uppercase tracking-widest">Head_Preview_Output</h2>
+          <section className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex items-center justify-between border-b-2 border-[#1a1a1a] pb-4">
+              <div className="flex items-center gap-4">
+                <CheckCircle2 size={16} className="text-emerald-600" />
+                <h2 className="text-[10px] font-black text-[#eee] uppercase tracking-[0.4em]">Data Preview</h2>
+              </div>
+              <div className="flex items-center gap-2 text-[9px] font-black text-[#666] uppercase tracking-[0.2em]">
+                <Terminal size={12} />
+                Encoding: UTF-8
+              </div>
             </div>
-            
-            <div className="bg-[#010409] border border-[#30363d] p-6 rounded-md overflow-x-auto shadow-inner">
-              <pre className="text-[12px] text-[#c9d1d9] leading-relaxed scrollbar-thin scrollbar-thumb-[#30363d]">
-                {JSON.stringify(preview, null, 2)}
-              </pre>
+
+            <div className="bg-[#0c0c0c] border-2 border-[#1a1a1a] relative group">
+              {/* Table Style Decor */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-[#c5a36b]/20" />
+
+              <div className="p-8 overflow-x-auto custom-scrollbar">
+                <pre className="text-[11px] text-[#999] font-mono leading-relaxed bg-[#050505] p-6 border-2 border-[#141414]">
+                  <span className="text-[#c5a36b]">{"{"}</span>
+                  <br />
+                  {JSON.stringify(preview, null, 2).slice(2, -2)}
+                  <br />
+                  <span className="text-[#c5a36b]">{"}"}</span>
+                </pre>
+              </div>
             </div>
-            
-            <p className="text-[10px] text-[#484f58] italic">
-              * Kernel has successfully indexed {preview.length} sample rows into local buffer.
-            </p>
-          </div>
+
+            <footer className="flex justify-between items-center text-[10px] font-black text-[#555] uppercase tracking-[0.4em]">
+              <p>System Status: Synchronized</p>
+              <p>Rows: {preview.length} (Sample Set)</p>
+            </footer>
+          </section>
         )}
-      </div>
+      </main>
     </div>
   );
 }

@@ -13,5 +13,7 @@ export function correlation(arr1, arr2) {
     den2 += (arr2[i] - avg2) ** 2;
   }
 
-  return (num / Math.sqrt(den1 * den2)).toFixed(2);
+  const denominator = Math.sqrt(den1 * den2);
+  if (denominator === 0) return 0;
+  return num / denominator;
 }

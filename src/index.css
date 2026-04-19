@@ -1,16 +1,95 @@
 @import "tailwindcss";
 
-body {
-  background: #0f172a;
-  color: white;
-  font-family: sans-serif;
+/* INDUSTRIAL STATISTICAL SYSTEM 
+  CORE STYLE MANIFEST v3.0 
+*/
+
+:root {
+  --industrial-bg: #050505;
+  --industrial-border: #1a1a1a;
+  --industrial-accent: #c5a36b;
+  --industrial-text: #bbb;
 }
 
+body {
+  background: var(--industrial-bg);
+  color: var(--industrial-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+main {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+@media (max-width: 640px) {
+  .max-w-7xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* SCROLLBAR KERNEL 
+  Transitioned from rounded-emerald to rigid-gold
+*/
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+  border-left: 1px solid var(--industrial-border);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00C896;
-  border-radius: 10px;
+  background: var(--industrial-accent);
+  /* Brutalist architecture: No border-radius */
+  border: 2px solid #080808;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4b582;
+}
+
+/* SYSTEM SELECTION 
+  Subtle gold tint for data highlighting
+*/
+
+::selection {
+  background-color: rgba(197, 163, 107, 0.2);
+  color: #fff;
+}
+
+/* UTILITY: INDUSTRIAL SCROLLBAR 
+  Apply to specific overflow containers (like Chat logs)
+*/
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--industrial-accent) #080808;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--industrial-accent);
+  border: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

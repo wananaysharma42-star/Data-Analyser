@@ -1,63 +1,95 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../components/layout/Navbar";
+import { Cpu, ChevronRight, Database, Terminal } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0d1117] font-mono text-[#c9d1d9] selection:bg-[#764abc]/30 overflow-hidden">
+    <div className="min-h-screen bg-[#050505] font-sans text-[#999] selection:bg-[#c5a36b]/20 overflow-hidden">
       <Navbar />
 
-      <section className="relative min-h-[90vh] flex flex-col justify-center items-center text-center px-6">
-        
-        {/* Subtle Background Grid - Typical of IDE startup screens */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      <section className="relative min-h-[90vh] flex flex-col justify-center items-center px-6">
+
+        {/* Hard Grid Background - More 'Blueprint' than 'Website' */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_60%,transparent_100%)]" />
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="z-10 w-full max-w-5xl"
         >
-          {/* Version/Status Tag */}
-          <span className="inline-block px-3 py-1 mb-6 text-[10px] font-bold tracking-[0.3em] text-[#764abc] border border-[#764abc]/30 bg-[#764abc]/5 rounded uppercase">
-            Build_v2.0.4 // Stable
-          </span>
+          {/* Main Frame: 2px Bordered Container */}
+          <div className="border-2 border-[#1a1a1a] bg-[#080808]/80 backdrop-blur-sm p-12 md:p-20 relative overflow-hidden">
 
-          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter leading-tight">
-            Kaggle_Dataset <br />
-            <span className="text-[#764abc] bg-clip-text">ANALYZER_KERNEL</span>
-          </h1>
+            {/* Aesthetic Corner Accents */}
+            <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#c5a36b]" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#c5a36b]" />
 
-          <p className="text-[#8b949e] max-w-2xl mb-10 text-sm md:text-base leading-relaxed mx-auto">
-            A specialized environment for <span className="text-[#c9d1d9]">multimodal data extraction</span>, 
-            automated visualization, and <span className="text-[#c9d1d9]">generative insights</span>. 
-            Optimized for research-grade processing.
-          </p>
+            <div className="space-y-8">
+              {/* Version/Status Tag */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 px-3 py-1 bg-[#c5a36b]/5 border-2 border-[#c5a36b]/20">
+                  <Cpu size={12} className="text-[#c5a36b]" />
+                  <span className="text-[10px] font-black tracking-[0.4em] text-[#c5a36b] uppercase">
+                    Build_v3.2.0 // Terminal_Active
+                  </span>
+                </div>
+                <div className="h-[2px] flex-1 bg-[#1a1a1a]" />
+              </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              to="/login"
-              className="group relative px-8 py-3 bg-[#764abc] hover:bg-[#8a5ad4] text-white text-xs font-black uppercase tracking-widest rounded transition-all border border-[#8a5ad4]/20 shadow-[0_0_20px_rgba(118,74,188,0.15)]"
-            >
-              Initialize_Session
-            </Link>
+              <h1 className="text-5xl md:text-8xl font-black text-[#fcfcfc] tracking-tighter leading-[0.85] uppercase italic">
+                Data_Analysis <br />
+                <span className="text-[#c5a36b]">Kernel_System</span>
+              </h1>
 
-            <Link
-              to="/dashboard"
-              className="px-8 py-3 border border-[#30363d] hover:bg-[#161b22] text-[#8b949e] hover:text-[#c9d1d9] text-xs font-black uppercase tracking-widest rounded transition-all"
-            >
-              View_System_Demo
-            </Link>
+              <div className="max-w-xl border-l-2 border-[#1a1a1a] pl-8 space-y-4">
+                <p className="text-[#666] text-sm md:text-lg font-bold leading-relaxed uppercase tracking-tight">
+                  High-fidelity environment for <span className="text-[#eee]">Automated Extraction</span>,
+                  Statistical Visualization, and <span className="text-[#eee]">Inference-Grade Processing</span>.
+                </p>
+                <div className="flex items-center gap-2 text-[10px] font-black text-[#333] tracking-[0.3em]">
+                  <Database size={12} />
+                  LATENCY: 14MS // BUFFER: OPTIMIZED
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-0 border-2 border-[#1a1a1a] w-fit bg-[#050505]">
+                <Link
+                  to="/login"
+                  className="group flex items-center gap-4 px-10 py-5 bg-[#c5a36b] text-[#050505] text-[11px] font-black uppercase tracking-[0.3em] transition-all hover:bg-[#d4b582]"
+                >
+                  Initialize_Session
+                  <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+
+                <Link
+                  to="/dashboard"
+                  className="px-10 py-5 text-[#555] hover:text-[#fcfcfc] hover:bg-[#1a1a1a] text-[11px] font-black uppercase tracking-[0.3em] transition-all border-l-2 border-[#1a1a1a]"
+                >
+                  System_Demo
+                </Link>
+              </div>
+            </div>
           </div>
         </motion.div>
 
-        {/* Console-style Footer Decor */}
-        <div className="absolute bottom-10 left-10 hidden lg:block">
-          <div className="text-[10px] text-[#30363d] space-y-1">
-            <p>{">"} SYSTEM.CONNECT(REMOTE_DB)</p>
-            <p>{">"} KERNEL.INITIALIZE(ML_MODULE)</p>
-            <p className="animate-pulse">{">"} READY_</p>
+        {/* Console Logs Footer */}
+        <div className="absolute bottom-12 left-12 hidden xl:block border-l-2 border-[#1a1a1a] pl-6 py-2">
+          <div className="text-[10px] font-bold text-[#222] space-y-2 uppercase tracking-[0.2em]">
+            <div className="flex items-center gap-2">
+              <Terminal size={10} />
+              <p>Network.Secure_Handshake: OK</p>
+            </div>
+            <p className="text-[#333] animate-pulse">{">"} Root_Kernel_Loaded_</p>
           </div>
+        </div>
+
+        {/* Right Side Meta Info */}
+        <div className="absolute bottom-12 right-12 hidden xl:block text-right">
+          <p className="text-[10px] font-black text-[#1a1a1a] uppercase tracking-[0.8em]">
+            Analytical_Unit_09
+          </p>
         </div>
       </section>
     </div>

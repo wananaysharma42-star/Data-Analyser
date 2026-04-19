@@ -16,29 +16,38 @@ import TwoSampleTest from "./pages/TwoSampleTest";
 export default function App() {
   const protect = (page) => <ProtectedRoute>{page}</ProtectedRoute>;
 
-  // JUPYTER DARK THEME CLASSES
+  /**
+   * INDUSTRIAL STATISTICAL SYSTEM STYLE SCHEMATIC
+   * Language: Brutalist / High-Contrast / Analytical
+   */
   const styles = {
-    // Deep charcoal background, monospaced font for a "code editor" feel
-    container: "min-h-screen bg-[#0d1117] text-[#c9d1d9] font-mono antialiased",
-    // Darker surface with a sharp, defined border (common in IDEs)
-    card: "bg-[#161b22] border border-[#30363d] rounded-md p-6 shadow-none",
-    // Purple accent color common in Jupyter branding
-    button: "bg-[#764abc] hover:bg-[#8a5ad4] text-white font-bold py-2 px-4 rounded-md transition-colors border border-[#8a5ad4]/20",
-    // Dimmed text for metadata and secondary labels
-    secondaryText: "text-[#8b949e] text-xs uppercase tracking-tight"
+    // Pure Black Background - High visibility for data viz
+    container: "min-h-screen bg-[#050505] text-[#999] font-sans antialiased selection:bg-[#c5a36b]/20",
+
+    // Rigid 2px Dark Borders - No rounding (Industrial Standard)
+    card: "bg-[#080808] border-2 border-[#1a1a1a] p-8 shadow-none",
+
+    // Champagne Gold Accent - High contrast against dark surfaces
+    button: "bg-[#c5a36b] hover:bg-[#d4b582] text-[#050505] font-black py-4 px-8 uppercase tracking-[0.3em] transition-all text-[11px]",
+
+    // Technical Labeling - Heavy tracking, dimmed for hierarchy
+    secondaryText: "text-[#444] text-[10px] font-black uppercase tracking-[0.4em]"
   };
 
   return (
     <div className={styles.container}>
-      {/* The 'max-w-screen-2xl' is used here to give a wide, 
-        expansive workspace feel typical of data science tools. 
+      {/* EXPANSIVE WORKSPACE ARCHITECTURE:
+        Removed default global padding to allow Navbar and high-density 
+        modules to utilize the full display width.
       */}
-      <main className="mx-auto p-4 md:p-6">
+      <main className="relative">
         <Routes>
+          {/* Public Authentication Gateways */}
           <Route path="/" element={<Home styles={styles} />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={<Signup styles={styles} />} />
           <Route path="/login" element={<Login styles={styles} />} />
 
+          {/* Secure Kernel Modules */}
           <Route path="/dashboard" element={protect(<Dashboard styles={styles} />)} />
           <Route path="/upload" element={protect(<Upload styles={styles} />)} />
           <Route path="/analyze" element={protect(<Analyze styles={styles} />)} />
@@ -48,6 +57,7 @@ export default function App() {
           <Route path="/settings" element={protect(<Settings styles={styles} />)} />
           <Route path="/ai" element={protect(<AIInsights styles={styles} />)} />
 
+          {/* Fallback Protocol */}
           <Route path="*" element={<NotFound styles={styles} />} />
         </Routes>
       </main>

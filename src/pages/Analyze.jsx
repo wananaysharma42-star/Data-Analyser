@@ -13,6 +13,7 @@ import {
   Cell,
   CartesianGrid
 } from "recharts";
+import { Activity, LayoutGrid, PieChart as PieIcon, BarChart3, ShieldCheck } from "lucide-react";
 
 export default function Analyze() {
   const { selectedData, user } = useData();
@@ -37,7 +38,7 @@ export default function Analyze() {
     if (!column) return [];
     const counts = {};
     selectedData.forEach((row) => {
-      const key = row[column] || "Empty";
+      const key = row[column] || "Empty Value";
       counts[key] = (counts[key] || 0) + 1;
     });
     return Object.entries(counts)
@@ -56,129 +57,161 @@ export default function Analyze() {
   }, [columns, selectedData]);
 
   return (
-    <div className="min-h-screen bg-[#0d1117] font-mono text-[#c9d1d9] selection:bg-[#764abc]/30">
+    <div className="min-h-screen bg-[#050505] font-sans text-[#bbb] selection:bg-[#c5a36b]/20">
       <Navbar />
 
-      <div className="p-6 space-y-6 max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="border-b border-[#30363d] pb-4">
-          <h1 className="text-xl font-bold tracking-tight uppercase">Exploratory_Data_Analysis</h1>
-          <p className="text-[#8b949e] text-[10px] mt-1 tracking-widest uppercase">Kernel: Visualization_Engine_v1.0</p>
-        </div>
+      <main className="max-w-7xl mx-auto p-8 space-y-10">
+
+        {/* Section Header */}
+        <header className="flex flex-col md:flex-row md:items-end justify-between py-6 border-b-2 border-[#1a1a1a]">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Activity size={14} className="text-[#c5a36b]" />
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#777]">Analytical System</p>
+            </div>
+            <h1 className="text-4xl font-bold text-[#fcfcfc] tracking-tight italic">Exploratory Data Analysis</h1>
+          </div>
+          <div className="text-[10px] font-black text-[#666] uppercase tracking-[0.4em]">
+            Status: Ready
+          </div>
+        </header>
 
         {columns.length === 0 ? (
-          <div className="bg-[#161b22] border border-[#30363d] p-10 rounded-md text-center">
-            <p className="text-[#8b949e] italic">[!] Input stream empty. Please upload a dataset to initialize analysis.</p>
+          <div className="border-2 border-dashed border-[#1a1a1a] p-24 text-center bg-[#080808]/50">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#666] italic">
+              Missing input data. Dataset required for visualization.
+            </p>
           </div>
         ) : (
           <>
-            {/* Control Bar */}
-            <div className="flex items-center gap-4 bg-[#161b22] border border-[#30363d] p-4 rounded-md">
-              <label className="text-xs font-bold text-[#764abc] uppercase">Target_Column:</label>
+            {/* Control Bar: Industrial Style */}
+            <div className="flex items-center gap-6 bg-[#0c0c0c] border-2 border-[#1a1a1a] p-6">
+              <div className="flex items-center gap-3">
+                <ShieldCheck size={16} className="text-[#c5a36b]" />
+                <label className="text-[11px] font-black text-[#888] uppercase tracking-widest">Select Target Feature</label>
+              </div>
               <select
                 value={column}
                 onChange={(e) => setColumn(e.target.value)}
-                className="bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] text-xs p-2 rounded outline-none focus:border-[#764abc] transition-colors cursor-pointer"
+                className="bg-[#050505] border-2 border-[#1a1a1a] text-[#eee] text-[11px] font-bold px-4 py-2 outline-none focus:border-[#c5a36b] transition-colors cursor-pointer uppercase tracking-tighter"
               >
-                <option value="">-- SELECT_FEATURE --</option>
+                <option value="">Select Column</option>
                 {columns.map((col, index) => (
                   <option key={index} value={col}>{col}</option>
                 ))}
               </select>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-6 items-start">
-              {/* Missing Values Table (Left Sidebar Style) */}
-              <div className="bg-[#161b22] border border-[#30363d] rounded-md overflow-hidden">
-                <div className="bg-[#0d1117] px-4 py-2 border-b border-[#30363d]">
-                  <h2 className="text-[10px] font-black uppercase tracking-widest">Null_Value_Audit</h2>
-                </div>
-                <div className="p-4 max-h-[600px] overflow-y-auto">
-                  <div className="space-y-1">
-                    {missingValues.map((item, i) => (
-                      <div key={i} className="flex justify-between items-center text-[11px] hover:bg-[#30363d]/30 p-1 rounded transition-colors group">
-                        <span className="text-[#8b949e] group-hover:text-[#c9d1d9]">{item.col}</span>
-                        <span className={`font-bold ${item.missing > 0 ? 'text-rose-400' : 'text-emerald-500'}`}>
-                          {item.missing}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            <div className="grid lg:grid-cols-3 gap-0 border-2 border-[#1a1a1a] bg-[#080808] divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-[#1a1a1a]">
 
-              {/* Chart Visualizations (Main Area) */}
-              <div className="lg:col-span-2 space-y-6">
+              {/* Audit Sidebar */}
+              <aside className="flex flex-col h-[800px]">
+                <div className="bg-[#0c0c0c] px-6 py-4 border-b-2 border-[#1a1a1a]">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#eee]">Null Value Audit</h2>
+                </div>
+                <div className="p-6 overflow-y-auto space-y-1 divide-y-2 divide-[#141414]">
+                  {missingValues.map((item, i) => (
+                    <div key={i} className="flex justify-between items-center py-3 group hover:bg-[#0c0c0c] px-2 transition-colors">
+                      <span className="text-xs font-bold text-[#888] group-hover:text-[#aaa]">{item.col}</span>
+                      <span className={`text-xs font-mono font-bold ${item.missing > 0 ? 'text-red-900' : 'text-emerald-900'}`}>
+                        {item.missing.toString().padStart(4, '0')}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </aside>
+
+              {/* Visualization Mainframe */}
+              <div className="lg:col-span-2 divide-y-2 divide-[#1a1a1a]">
                 {chartData.length > 0 ? (
                   <>
-                    {/* Bar Chart Section */}
-                    <div className="bg-[#161b22] border border-[#30363d] rounded-md p-6 h-[400px]">
-                      <h3 className="text-[10px] font-bold text-[#8b949e] uppercase mb-6 tracking-widest">Frequency_Distribution_Plot</h3>
-                      <ResponsiveContainer width="100%" height="90%">
+                    {/* Bar Chart Unit */}
+                    <div className="p-10 h-[400px]">
+                      <div className="flex items-center gap-3 mb-8">
+                        <BarChart3 size={16} className="text-[#c5a36b]" />
+                        <h3 className="text-[10px] font-black text-[#888] uppercase tracking-[0.3em]">Frequency Distribution</h3>
+                      </div>
+                      <ResponsiveContainer width="100%" height="80%">
                         <BarChart data={chartData}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#30363d" vertical={false} />
-                          <XAxis 
-                            dataKey="name" 
-                            stroke="#8b949e" 
-                            fontSize={10} 
-                            tickLine={false} 
-                            axisLine={{ stroke: '#30363d' }}
+                          <CartesianGrid strokeDasharray="0" stroke="#1a1a1a" vertical={false} />
+                          <XAxis
+                            dataKey="name"
+                            stroke="#666"
+                            fontSize={9}
+                            fontWeight="bold"
+                            tickLine={false}
+                            axisLine={{ stroke: '#1a1a1a', strokeWidth: 2 }}
                           />
-                          <YAxis 
-                            stroke="#8b949e" 
-                            fontSize={10} 
-                            tickLine={false} 
-                            axisLine={{ stroke: '#30363d' }}
+                          <YAxis
+                            stroke="#666"
+                            fontSize={9}
+                            fontWeight="bold"
+                            tickLine={false}
+                            axisLine={{ stroke: '#1a1a1a', strokeWidth: 2 }}
                           />
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#161b22', border: '1px solid #30363d', borderRadius: '4px', fontSize: '12px' }}
-                            itemStyle={{ color: '#764abc' }}
+                          <Tooltip
+                            cursor={{ fill: '#1a1a1a' }}
+                            contentStyle={{ backgroundColor: '#0c0c0c', border: '2px solid #1a1a1a', borderRadius: '0', fontSize: '10px', fontWeight: 'bold' }}
+                            itemStyle={{ color: '#c5a36b' }}
                           />
-                          <Bar dataKey="value" fill="#764abc" radius={[4, 4, 0, 0]} barSize={40} />
+                          <Bar dataKey="value" fill="#c5a36b" shape={<Rectangle />} />
                         </BarChart>
                       </ResponsiveContainer>
                     </div>
 
-                    {/* Pie Chart Section */}
-                    <div className="bg-[#161b22] border border-[#30363d] rounded-md p-6 h-[400px]">
-                      <h3 className="text-[10px] font-bold text-[#8b949e] uppercase mb-6 tracking-widest">Category_Composition_Map</h3>
-                      <ResponsiveContainer width="100%" height="90%">
+                    {/* Pie Chart Unit */}
+                    <div className="p-10 h-[400px]">
+                      <div className="flex items-center gap-3 mb-8">
+                        <PieIcon size={16} className="text-[#c5a36b]" />
+                        <h3 className="text-[10px] font-black text-[#888] uppercase tracking-[0.3em]">Category Composition</h3>
+                      </div>
+                      <ResponsiveContainer width="100%" height="80%">
                         <PieChart>
                           <Pie
                             data={chartData}
                             dataKey="value"
-                            innerRadius={60}
-                            outerRadius={100}
-                            paddingAngle={5}
-                            stroke="#161b22"
-                            strokeWidth={2}
+                            innerRadius={70}
+                            outerRadius={110}
+                            paddingAngle={0}
+                            stroke="#080808"
+                            strokeWidth={4}
                           >
                             {chartData.map((_, i) => (
                               <Cell
                                 key={i}
-                                fill={
-                                  ["#764abc", "#8a5ad4", "#484f58", "#30363d", "#21262d"][i % 5]
-                                }
+                                fill={["#c5a36b", "#8e754d", "#555555", "#333333", "#1a1a1a"][i % 5]}
                               />
                             ))}
                           </Pie>
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#161b22', border: '1px solid #30363d', borderRadius: '4px', fontSize: '12px' }}
+                          <Tooltip
+                            contentStyle={{ backgroundColor: '#0c0c0c', border: '2px solid #1a1a1a', borderRadius: '0', fontSize: '10px', fontWeight: 'bold' }}
                           />
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
                   </>
                 ) : (
-                  <div className="h-full flex items-center justify-center bg-[#161b22]/30 border border-[#30363d] border-dashed rounded-md p-20">
-                    <p className="text-[#8b949e] text-xs uppercase tracking-tighter italic">Select a column to generate visual output...</p>
+                  <div className="h-full flex flex-col items-center justify-center opacity-20">
+                    <LayoutGrid size={48} className="mb-4" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.5em]">Awaiting input parameters</p>
                   </div>
                 )}
               </div>
             </div>
           </>
         )}
-      </div>
+
+        <footer className="pt-8 border-t-2 border-[#1a1a1a] flex justify-between items-center text-[10px] font-black uppercase tracking-[0.4em] text-[#555]">
+          <p>Visualization System</p>
+          <p>System Active</p>
+        </footer>
+      </main>
     </div>
   );
 }
+
+/* Custom bar shape to keep it sharp and square */
+const Rectangle = (props) => {
+  const { fill, x, y, width, height } = props;
+  return <rect x={x} y={y} width={width} height={height} fill={fill} />;
+};

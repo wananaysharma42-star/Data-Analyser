@@ -1,106 +1,133 @@
 import Navbar from "../components/layout/Navbar";
 import { useData } from "../context/DataContext";
-import { useEffect, useState } from "react";
-import { supabase } from "../services/supabase";
+import { Database, Table, FileText, Trash2, Clock, Activity, BarChart2 } from "lucide-react";
 
 export default function Dashboard() {
   const { datasets, selectedData, user, loading: authLoading, removeDataset, reports } = useData();
-  const userName = user?.user_metadata?.name || user?.email || "GUEST_USER";
 
-  const totalRows = selectedData.length;
+  const userName = user?.user_metadata?.name || user?.email || "GUEST_USER";
+  const totalRows = selectedData.length.toLocaleString();
   const totalCols = selectedData[0] ? Object.keys(selectedData[0]).length : 0;
 
   return (
-    <div className="min-h-screen bg-[#0d1117] font-mono text-[#c9d1d9] selection:bg-[#764abc]/30">
+    <div className="min-h-screen bg-[#050505] font-sans text-[#bbb] selection:bg-[#c5a36b]/20">
       <Navbar />
 
-      <div className="p-6 space-y-8 max-w-7xl mx-auto">
-        {/* WELCOME SECTION */}
-        <div className="border-l-4 border-[#764abc] pl-6 py-2">
-          <h1 className="text-3xl font-bold tracking-tight">
-            SYSTEM_ACCESS: <span className="text-[#764abc] uppercase">{authLoading ? "AUTHORIZING..." : userName}</span>
-          </h1>
-          <p className="text-[#8b949e] text-xs mt-2 uppercase tracking-widest">
-            STATUS: {user ? "KERNEL_READY" : "OFFLINE_MODE"} // SESSION: {user ? user.id.slice(0,8) : "ANONYMOUS"}
-          </p>
-        </div>
+      <main className="max-w-7xl mx-auto p-8 space-y-10">
 
-        {/* METRICS GRID */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card title="LOCAL_DATASETS" value={datasets.length} />
-          <Card title="BUFFER_ROWS" value={totalRows} />
-          <Card title="BUFFER_COLS" value={totalCols} />
-          <Card title="SAVED_REPORTS" value={reports.length} />
-        </div>
-
-        {/* RECENT DATASETS SECTION */}
-        <div className="bg-[#161b22] border border-[#30363d] rounded-md overflow-hidden shadow-2xl">
-          <div className="bg-[#0d1117] px-6 py-3 border-b border-[#30363d] flex justify-between items-center">
-            <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#8b949e]">
-              Mounted_File_System
-            </h2>
-            <span className="text-[9px] text-emerald-500 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              SYNCHRONIZED
-            </span>
+        {/* Header Section: Large & Bold */}
+        <header className="flex flex-col md:flex-row md:items-end justify-between py-6 border-b-2 border-[#1a1a1a]">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#777]">System Status: Operational</p>
+            </div>
+            <h1 className="text-4xl font-bold text-[#fcfcfc] tracking-tight">
+              {authLoading ? "Authorizing Session..." : `Analyst Dashboard: ${userName}`}
+            </h1>
           </div>
 
-          <div className="p-6">
+          <div className="flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-[#888]">
+            <div className="flex items-center gap-3 border-l-2 border-[#1a1a1a] pl-8">
+              <Activity size={16} className="text-[#c5a36b]" />
+              <span>Network: 100% Stable</span>
+            </div>
+            <div className="flex items-center gap-3 border-l-2 border-[#1a1a1a] pl-8">
+              <Clock size={16} />
+              <span>{new Date().toLocaleDateString()}</span>
+            </div>
+          </div>
+        </header>
+
+        {/* Statistical Overview: Broad Borders */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-0 border-2 border-[#1a1a1a] divide-x-2 divide-[#1a1a1a] bg-[#080808]">
+          <StatBox title="Active Datasets" value={datasets.length} subtitle="Connected Sources" />
+          <StatBox title="Total Observations" value={totalRows} subtitle="Aggregated Rows" />
+          <StatBox title="Data Variables" value={totalCols} subtitle="Column Count" />
+          <StatBox title="Generated Reports" value={reports.length} subtitle="Saved Analysis" />
+        </div>
+
+        {/* Resource Management Section */}
+        <section className="border-2 border-[#1a1a1a] bg-[#080808]">
+          <div className="flex items-center justify-between px-8 py-5 border-b-2 border-[#1a1a1a] bg-[#0c0c0c]">
+            <div className="flex items-center gap-3">
+              <BarChart2 size={18} className="text-[#c5a36b]" />
+              <h2 className="text-sm font-bold text-[#eee] uppercase tracking-[0.15em]">Registered Data Resources</h2>
+            </div>
+            <p className="text-xs font-bold text-[#666] uppercase tracking-widest">Environment: Local_Host</p>
+          </div>
+
+          <div className="p-2">
             {datasets.length === 0 ? (
-              <div className="py-10 text-center border border-dashed border-[#30363d] rounded">
-                <p className="text-[#8b949e] italic text-sm">
-                  [!] No data found in local directory.
-                </p>
+              <div className="py-24 text-center">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#666]">Waiting for data input...</p>
               </div>
             ) : (
-              <div className="space-y-2">
-                {datasets.map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex justify-between items-center bg-[#0d1117] hover:bg-[#1c2128] p-4 rounded border border-[#30363d] transition-colors group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-[#764abc] font-bold opacity-50 group-hover:opacity-100 transition-opacity">
-                        {">"}
-                      </span>
-                      <span className="text-sm font-semibold">{item.name}</span>
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <div className="text-[10px] text-[#8b949e] font-bold text-right">
-                        <span className="text-[#c9d1d9]">{item.rows}</span>_ROWS <br/>
-                        <span className="text-[#c9d1d9]">{item.columns}</span>_COLS
-                      </div>
-                      <button 
-                        onClick={() => removeDataset(i)}
-                        className="text-[9px] font-black text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 px-2 py-1 rounded border border-red-500/20 transition-all uppercase tracking-tighter"
-                      >
-                        UNMOUNT
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="text-[11px] font-black uppercase tracking-[0.2em] text-[#888]">
+                    <th className="px-8 py-4 border-b-2 border-[#1a1a1a]">Index</th>
+                    <th className="px-8 py-4 border-b-2 border-[#1a1a1a]">Dataset Identifier</th>
+                    <th className="px-8 py-4 border-b-2 border-[#1a1a1a]">Matrix Dimensions</th>
+                    <th className="px-8 py-4 border-b-2 border-[#1a1a1a] text-right">Administrative Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y-2 divide-[#141414]">
+                  {datasets.map((item, i) => (
+                    <tr key={i} className="hover:bg-[#0f0f0f] transition-all group">
+                      <td className="px-8 py-6 text-sm font-mono text-[#666]">
+                        {(i + 1).toString().padStart(2, '0')}
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="text-lg font-semibold text-[#efefef] tracking-tight group-hover:text-white">
+                          {item.name}
+                        </span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-[#777] uppercase tracking-tighter">
+                            Rows: {item.rows.toLocaleString()}
+                          </span>
+                          <span className="text-xs font-bold text-[#777] uppercase tracking-tighter">
+                            Cols: {item.columns}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6 text-right">
+                        <button
+                          onClick={() => removeDataset(i)}
+                          className="px-4 py-2 text-[10px] font-black uppercase tracking-widest border border-[#555] text-[#888] hover:border-red-900 hover:text-red-500 hover:bg-red-950/10 transition-all"
+                        >
+                          Delete Resource
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
-        </div>
+        </section>
 
-        {/* FOOTER LOG */}
-        <div className="text-[10px] text-[#30363d] font-bold uppercase flex justify-between">
-          <span>Environment: PRODUCTION_ALPHA</span>
-          <span>Last_Sync: {new Date().toLocaleTimeString()}</span>
-        </div>
-      </div>
+        {/* Global Footer */}
+        <footer className="pt-8 flex justify-between items-center text-[10px] font-black uppercase tracking-[0.5em] text-[#555]">
+          <div className="flex gap-12">
+            <span>Core_Version: 2.6.4</span>
+            <span>Security: AES-256</span>
+          </div>
+          <span>System_Update: {new Date().toLocaleTimeString()}</span>
+        </footer>
+      </main>
     </div>
   );
 }
 
-function Card({ title, value }) {
+function StatBox({ title, value, subtitle }) {
   return (
-    <div className="bg-[#161b22] border border-[#30363d] p-5 rounded-md hover:border-[#764abc]/50 transition-colors">
-      <p className="text-[10px] text-[#8b949e] font-black uppercase tracking-widest">{title}</p>
-      <h3 className="text-2xl font-bold mt-2 text-[#c9d1d9]">{value}</h3>
-      <div className="w-full bg-[#0d1117] h-0.5 mt-4 rounded-full overflow-hidden">
-        <div className="bg-[#764abc] h-full w-1/3 opacity-50"></div>
-      </div>
+    <div className="p-10 hover:bg-[#0d0d0d] transition-colors">
+      <p className="text-[10px] font-black text-[#888] uppercase tracking-[0.25em] mb-4">{title}</p>
+      <h3 className="text-4xl font-bold text-[#fcfcfc] tabular-nums mb-2">{value}</h3>
+      <p className="text-[9px] font-bold text-[#666] uppercase tracking-widest">{subtitle}</p>
     </div>
   );
 }

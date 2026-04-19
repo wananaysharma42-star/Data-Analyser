@@ -16,6 +16,7 @@
     "html2canvas": "latest",
     "jspdf": "latest",
     "jspdf-autotable": "latest",
+    "lucide-react": "^1.8.0",
     "papaparse": "latest",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
