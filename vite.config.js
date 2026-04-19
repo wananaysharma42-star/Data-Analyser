@@ -10,7 +10,7 @@ export default defineConfig({
         manualChunks: {
           react: ["react", "react-dom", "react-router-dom"],
           charts: ["recharts"],
-          backend: ["@supabase/supabase-js", "@google/genai", "papaparse"],
+          backend: ["@supabase/supabase-js", "@google/generative-ai", "papaparse"],
         },
       },
     },
