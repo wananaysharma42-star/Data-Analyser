@@ -32,7 +32,7 @@
 - **UI Framework**: React 19 (Vite)
 - **Styling**: Tailwind CSS
 - **Backend/Auth**: Supabase
-- **AI Core**: Google Gemini SDK (1.5 Flash)
+- **AI Core**: Google Gemini SDK (3 Flash)
 - **Data Engine**: PapaParse & Custom Statistical Kernels
 
 ---
